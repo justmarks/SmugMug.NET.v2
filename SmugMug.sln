@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmugMug.NET.Tests", "SmugMug.NET.Tests\SmugMug.NET.Tests.csproj", "{31BEE271-FC6F-474A-9A98-A35AAFC9C810}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmugMug.NET", "SmugMug.NET\SmugMug.NET.csproj", "{946824B2-8707-49B4-9295-5A712A0918AE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{31BEE271-FC6F-474A-9A98-A35AAFC9C810}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{31BEE271-FC6F-474A-9A98-A35AAFC9C810}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{31BEE271-FC6F-474A-9A98-A35AAFC9C810}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{31BEE271-FC6F-474A-9A98-A35AAFC9C810}.Release|Any CPU.Build.0 = Release|Any CPU
+		{946824B2-8707-49B4-9295-5A712A0918AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{946824B2-8707-49B4-9295-5A712A0918AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{946824B2-8707-49B4-9295-5A712A0918AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{946824B2-8707-49B4-9295-5A712A0918AE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9438360C-DA9A-44B6-8752-C14E211D5062}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9438360C-DA9A-44B6-8752-C14E211D5062}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9438360C-DA9A-44B6-8752-C14E211D5062}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9438360C-DA9A-44B6-8752-C14E211D5062}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
