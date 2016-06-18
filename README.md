@@ -1,1 +1,1 @@
-"# SmugMug.NET.v2" 
+# SmugMug.NET.v2
