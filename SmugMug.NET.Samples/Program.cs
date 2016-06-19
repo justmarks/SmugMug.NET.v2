@@ -7,6 +7,8 @@ namespace SmugMug.NET.Samples
         static void Main(string[] args)
         {
             var apiAnonymous = AuthenticationSample.AuthenticateUsingAnonymous();
+            FoldersSample.WorkingWithFoldersAndAlbums(apiAnonymous).Wait();
+            NodesSample.WorkingWithNodes(apiAnonymous).Wait();
 
             var apiOAuth = AuthenticationSample.AuthenticateUsingOAuth();
         }
