@@ -81,6 +81,8 @@
   <ItemGroup>
     <Compile Include="AuthenticationSample.cs" />
     <Compile Include="FoldersSample.cs" />
+    <Compile Include="UserSample.cs" />
+    <Compile Include="ImagesSample.cs" />
     <Compile Include="NodesSample.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
