@@ -1,6 +1,4 @@
-﻿
-
-namespace SmugMug.NET.Samples
+﻿namespace SmugMug.NET.Samples
 {
     class Program
     {
@@ -13,6 +11,10 @@ namespace SmugMug.NET.Samples
             UserSample.WorkingWithUsers(apiAnonymous).Wait();
 
             var apiOAuth = AuthenticationSample.AuthenticateUsingOAuth();
+            FoldersSample.WorkingWithFoldersAndAlbums(apiOAuth).Wait();
+            NodesSample.WorkingWithNodes(apiOAuth).Wait();
+            ImagesSample.WorkingWithAlbumImages(apiOAuth).Wait();
+            UserSample.WorkingWithUsers(apiOAuth).Wait();
         }
     }
 }
