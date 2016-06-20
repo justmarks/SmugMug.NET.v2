@@ -8,11 +8,28 @@ namespace SmugMug.NET.Samples
 {
     class AuthenticationSample
     {
+        const string CONSUMERTOKEN = "SmugMugOAuthConsumerToken";
+        const string CONSUMERSECRET = "SmugMugOAuthConsumerSecret";
+
         public static SmugMugAPI AuthenticateUsingAnonymous()
         {
             //Access OAuth keys from App.config
+            string consumerKey = null;
             Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-            string consumerKey = config.AppSettings.Settings["SmugMugOAuthToken"].Value;
+            var keySetting = config.AppSettings.Settings[CONSUMERTOKEN];
+            if (keySetting != null)
+            {
+                consumerKey = keySetting.Value;
+                //If not provided, try to load the string from the environment
+                if (String.IsNullOrEmpty(consumerKey))
+                {
+                    consumerKey = System.Environment.GetEnvironmentVariable(CONSUMERTOKEN);
+                }
+            }
+            else
+            {
+                throw new ConfigurationErrorsException("The OAuth consumer token must be specified in App.config");
+            }
 
             //Connect to SmugMug using Anonymous access
             SmugMugAPI apiAnonymous = new SmugMugAPI(LoginType.Anonymous, new OAuthCredentials(consumerKey));
@@ -22,9 +39,24 @@ namespace SmugMug.NET.Samples
         public static SmugMugAPI AuthenticateUsingOAuth()
         {
             //Access OAuth keys from App.config
+            string consumerKey = null;
             Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-            string consumerKey = config.AppSettings.Settings["SmugMugOAuthToken"].Value;
-            string secret = config.AppSettings.Settings["SmugMugOAuthSecret"].Value;
+            var keySetting = config.AppSettings.Settings[CONSUMERTOKEN];
+            if (keySetting != null)
+            {
+                consumerKey = keySetting.Value;
+                //If not provided, try to load the string from the environment
+                if (String.IsNullOrEmpty(consumerKey))
+                {
+                    consumerKey = System.Environment.GetEnvironmentVariable(CONSUMERTOKEN);
+                }
+            }
+            else
+            {
+                throw new ConfigurationErrorsException("The OAuth consumer token must be specified in App.config");
+            }
+
+            string secret = config.AppSettings.Settings[CONSUMERSECRET].Value;
 
             //Generate oAuthCredentials using OAuth library
             OAuthCredentials oAuthCredentials = GenerateOAuthAccessToken(consumerKey, secret);
