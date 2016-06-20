@@ -12,7 +12,9 @@
 
             var apiOAuth = AuthenticationSample.AuthenticateUsingOAuth();
             FoldersSample.WorkingWithFoldersAndAlbums(apiOAuth).Wait();
+            FoldersSample.CreatingFoldersAndAlbums(apiOAuth).Wait();
             NodesSample.WorkingWithNodes(apiOAuth).Wait();
+            NodesSample.CreatingNodes(apiOAuth).Wait();
             ImagesSample.WorkingWithAlbumImages(apiOAuth).Wait();
             UserSample.WorkingWithUsers(apiOAuth).Wait();
         }

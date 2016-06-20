@@ -13,7 +13,6 @@ namespace SmugMug.NET.Samples
             User user = await api.GetUser("cmac");
             Console.WriteLine(user.Name);
 
-            //Get the root node for the user
             Node rootNode = await api.GetRootNode(user);
             Console.WriteLine(rootNode);
 
@@ -24,6 +23,26 @@ namespace SmugMug.NET.Samples
             //Get a specific node, "XWx8t"
             Node node = await api.GetNode("XWx8t");
             Console.WriteLine("Node '{0}' is a {1}", node.Name, node.Type);
+        }
+
+        public static async Task CreatingNodes(SmugMugAPI api)
+        {
+            //Get access to the logged in user
+            User user = await api.GetAuthenticatedUser();
+            Console.WriteLine("{0} is currently authenticated", user.Name);
+
+            //Get the root node ID
+            string defaultNodeID = api.GetDefaultNodeID(user);
+
+            //Create a new folder node at the root
+            Node folderNode = await api.CreateNode(NodeType.Folder, "TestFolderNode", defaultNodeID);
+
+            //Create a new album node in that folder
+            Dictionary<string, string> arguments = new Dictionary<string, string>() { { "Description", "test description" } };
+            Node albumNode = await api.CreateNode(NodeType.Album, "TestAlbumNode", folderNode.NodeID, arguments);
+
+            //Delete the newly created nodes
+            await api.DeleteNode(folderNode);
         }
     }
 }
