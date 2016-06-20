@@ -20,13 +20,9 @@ namespace SmugMug.NET.Samples
             if (keySetting != null)
             {
                 consumerKey = keySetting.Value;
-                //If not provided, try to load the string from the environment
-                if (String.IsNullOrEmpty(consumerKey))
-                {
-                    consumerKey = System.Environment.GetEnvironmentVariable(CONSUMERTOKEN);
-                }
             }
-            else
+
+            if (String.IsNullOrEmpty(consumerKey))
             {
                 throw new ConfigurationErrorsException("The OAuth consumer token must be specified in App.config");
             }
@@ -45,18 +41,22 @@ namespace SmugMug.NET.Samples
             if (keySetting != null)
             {
                 consumerKey = keySetting.Value;
-                //If not provided, try to load the string from the environment
-                if (String.IsNullOrEmpty(consumerKey))
-                {
-                    consumerKey = System.Environment.GetEnvironmentVariable(CONSUMERTOKEN);
-                }
             }
-            else
+            if (String.IsNullOrEmpty(consumerKey))
             {
                 throw new ConfigurationErrorsException("The OAuth consumer token must be specified in App.config");
             }
 
-            string secret = config.AppSettings.Settings[CONSUMERSECRET].Value;
+            string secret = null;
+            keySetting = config.AppSettings.Settings[CONSUMERSECRET];
+            if (keySetting != null)
+            {
+                secret = keySetting.Value;
+            }
+            if (String.IsNullOrEmpty(secret))
+            {
+                throw new ConfigurationErrorsException("The OAuth consumer token secret must be specified in App.config");
+            }
 
             //Generate oAuthCredentials using OAuth library
             OAuthCredentials oAuthCredentials = GenerateOAuthAccessToken(consumerKey, secret);
