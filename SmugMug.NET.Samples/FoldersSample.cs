@@ -35,7 +35,7 @@ namespace SmugMug.NET.Samples
             Console.WriteLine("Album '{0}' has {1} images", album.Name, album.ImageCount);
         }
 
-        public static async Task CreatingFoldersAndAlbums(SmugMugAPI api)
+        public static async Task ManagingFoldersAndAlbums(SmugMugAPI api)
         {
             //Get access to the logged in user
             User user = await api.GetAuthenticatedUser();
@@ -43,10 +43,16 @@ namespace SmugMug.NET.Samples
 
             //Create a new folder at the root
             Folder folder = await api.CreateFolder("TestFolder", user, "");
+            Console.WriteLine("Created folder {0}", folder.Name);
 
             //Create a new album in that folder
             Dictionary<string, string> arguments = new Dictionary<string, string>() { { "Description", "test description" } };
             Album album = await api.CreateAlbum("TestAlbum", folder, arguments);
+            Console.WriteLine("Created album {0}: {1}", album.Name, album.Description);
+
+            Dictionary<string, string> albumUpdates = new Dictionary<string, string>() { { "Name", "Updated Album Name" }, { "Description", "Updated description" }, { "SortDirection", "Ascending" } };
+            Album updatedAlbum = await api.UpdateAlbum(album, albumUpdates);
+            Console.WriteLine("Updated album {0}: {1}", updatedAlbum.Name, updatedAlbum.Description);
 
             //Delete the newly created album and folder
             await api.DeleteAlbum(album);
