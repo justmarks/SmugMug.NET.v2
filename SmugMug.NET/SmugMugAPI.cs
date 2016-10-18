@@ -245,6 +245,14 @@ namespace SmugMug.NET
         {
             var jsonContent = new StringBuilder();
             jsonContent.Append("{");
+
+            //Remove all non alpha-numeric characters from the urlName
+            char[] arr = name.Where(c => (char.IsLetterOrDigit(c) ||
+                             char.IsWhiteSpace(c))).ToArray();
+            arr[0] = new string(arr).ToUpper()[0];
+            string urlName = new string(arr);
+            urlName = urlName.Replace(" ", "-");
+
             jsonContent.Append(string.Format("\"Name\":\"{0}\", \"UrlName\":\"{0}\"", name));
 
             //For each argument, append to Folder
