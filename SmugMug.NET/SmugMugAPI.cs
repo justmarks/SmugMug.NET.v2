@@ -117,8 +117,38 @@ namespace SmugMug.NET
 
                 HttpResponseMessage httpResponse = client.PostAsync(endpoint, new StringContent(jsonContent)).Result;
                 System.Diagnostics.Trace.WriteLine(string.Format("POST {0}: {1}", httpResponse.RequestMessage.RequestUri, jsonContent));
-                httpResponse.EnsureSuccessStatusCode();
-                PostResponseStub<T> contentResponse = await httpResponse.Content.ReadAsAsync<PostResponseStub<T>>();
+                
+                PostResponseStub<T> contentResponse = null;
+                if (httpResponse.IsSuccessStatusCode)
+                {
+                    contentResponse = await httpResponse.Content.ReadAsAsync<PostResponseStub<T>>();
+                }
+                else
+                {
+                    var failedResponse = httpResponse.Content.ReadAsStringAsync();
+                    JObject response = JObject.Parse(failedResponse.Result);
+                    var invalidParameters =
+                        from p in response["Options"]["Parameters"]["POST"]
+                        where p["Problems"] != null
+                        select new POSTParameter
+                        {
+                            ParameterName = (string)p["Name"],
+                            Problem = (string)p["Problems"].First()
+                        };
+
+                    if (invalidParameters.Count() > 0)
+                    {
+                        List<ArgumentException> argumentExceptions = new List<ArgumentException>();
+                        foreach (POSTParameter invalidParameter in invalidParameters)
+                        {
+                            argumentExceptions.Add(new ArgumentException(invalidParameter.Problem, invalidParameter.ParameterName));
+                        }
+                        throw new AggregateException("HTTP POST Request failed.  See inner exceptions for individual reasons.", argumentExceptions.ToArray());
+                    }
+                    else
+                        throw new HttpRequestException("HTTP POST Request failed for unknown reasons");
+                }
+
                 System.Diagnostics.Trace.WriteLine(string.Format("---{0} {1}: {2}", contentResponse.Code, contentResponse.Message, contentResponse.Response));
 
                 return contentResponse.Response;
