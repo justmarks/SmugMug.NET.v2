@@ -64,4 +64,10 @@ namespace SmugMug.NET
             return Folder.ToString();
         }
     }
+
+    public class POSTParameter
+    {
+        public string ParameterName { get; set; }
+        public string Problem { get; set; }
+    }
 }
