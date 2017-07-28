@@ -95,6 +95,10 @@ namespace SmugMug.NET
         XLarge,
         X2Large,
         X3Large,
+        X4Large,
+        X5Large,
+        4K,
+        5K,
         Original
     }
 
