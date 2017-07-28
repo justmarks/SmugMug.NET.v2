@@ -97,8 +97,10 @@ namespace SmugMug.NET
         X3Large,
         X4Large,
         X5Large,
-        4K,
-        5K,
+        [EnumMember(Value = "4K")]
+        FourK,
+        [EnumMember(Value = "5K")]
+        FiveK,
         Original
     }
 
