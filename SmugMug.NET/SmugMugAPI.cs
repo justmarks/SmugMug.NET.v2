@@ -86,6 +86,44 @@ namespace SmugMug.NET
             }
         }
 
+        private async Task<Tuple<T, Dictionary<string,TE>>> GetRequestWithExpansions<T, TE>(string endpoint)
+        {
+            return await GetRequestWithExpansions<T, TE>(SMUGMUG_API_v2_BaseEndpoint, endpoint);
+        }
+        private async Task<Tuple<T, Dictionary<string, TE>>> GetRequestWithExpansions<T, TE>(string baseAddress, string endpoint)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(baseAddress);
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                if (LoginType == LoginType.Anonymous)
+                {
+                    endpoint = string.Format("{0}{2}APIKey={1}", endpoint, smugmugTokenManager.ConsumerKey, endpoint.Contains('?') ? "&" : "?");
+                }
+                else if (LoginType == LoginType.OAuth)
+                {
+                    smugmugConsumer = new DesktopConsumer(smugmugServiceDescription, smugmugTokenManager);
+                    HttpDeliveryMethods resourceHttpMethod = HttpDeliveryMethods.GetRequest | HttpDeliveryMethods.AuthorizationHeaderRequest;
+
+                    var resourceEndpoint = new MessageReceivingEndpoint(baseAddress + endpoint, resourceHttpMethod);
+                    var httpRequest = smugmugConsumer.PrepareAuthorizedRequest(resourceEndpoint, smugmugTokenManager.AccessToken);
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("OAuth", httpRequest.Headers["Authorization"].Substring(6));
+                }
+                else
+                {
+                    throw new NotSupportedException(string.Format("LoginType {0} is unsupported", LoginType));
+                }
+
+                HttpResponseMessage httpResponse = client.GetAsync(endpoint).Result;
+                System.Diagnostics.Trace.WriteLine(string.Format("GET {0}", httpResponse.RequestMessage.RequestUri));
+                httpResponse.EnsureSuccessStatusCode();
+                GetResponseWithExpansionStub<T,TE> contentResponse = await httpResponse.Content.ReadAsAsync<GetResponseWithExpansionStub<T,TE>>();
+                System.Diagnostics.Trace.WriteLine(string.Format("---{0}:{1}", contentResponse.Code, contentResponse.Message));
+
+                return new Tuple<T, Dictionary<string, TE>>(contentResponse.Response, contentResponse.Expansions);
+            }
+        }
+
         private async Task<T> PostRequest<T>(string endpoint, string jsonContent)
         {
             return await PostRequest<T>(SMUGMUG_API_v2_BaseEndpoint, endpoint, jsonContent);
@@ -692,6 +730,45 @@ namespace SmugMug.NET
         public async Task<List<Album>> GetFeaturedAlbums(User user, int maxAlbumCount = int.MaxValue)
         {
             return await GetPagedAlbums(user.Uris.UserFeaturedAlbums.Uri, maxAlbumCount);
+        }
+
+        private async Task<AlbumImagesWithSizes> GetPagedAlbumImagesWithSizes(string initialUri, int maxCount)
+        {
+            var result = new AlbumImagesWithSizes();
+            result.AlbumImages = new List<AlbumImage>();
+            result.ImageSizes = new Dictionary<string, ImageSizesGetResponse>();
+            string nextPage = initialUri;
+            nextPage = string.Format("{0}{2}{1}", nextPage, "_expand=ImageSizes", nextPage.Contains('?') ? "&" : "?");
+            //AlbumImagePagesResponse albumImagePagesResponse;
+            //ImageSizesGetResponse albumImageSizesResponse;
+            Tuple<AlbumImagePagesResponse, Dictionary<string, ImageSizesGetResponse>> response;
+            do
+            {
+                response = await GetRequestWithExpansions<AlbumImagePagesResponse, ImageSizesGetResponse>(nextPage);
+                result.AlbumImages.AddRange(response.Item1.AlbumImage);
+                result.ImageSizes = result.ImageSizes.Concat(response.Item2).GroupBy(d => d.Key).ToDictionary(d => d.Key, d => d.First().Value);
+                if (response.Item1.Pages != null)
+                {
+                    nextPage = response.Item1.Pages.NextPage;
+                    if (!String.IsNullOrEmpty(nextPage))
+                    {
+                        nextPage = string.Format("{0}{2}{1}", nextPage, "_expand=ImageSizes", nextPage.Contains('?') ? "&" : "?"); 
+                    }
+                }
+                else
+                {
+                    break;
+                }
+                //TODO: Update nextPage to Ensure we don't return more than maxCount
+            }
+            while (!String.IsNullOrEmpty(nextPage) && (result.AlbumImages.Count < maxCount));
+
+            return result;
+        }
+
+        public async Task<AlbumImagesWithSizes> GetAlbumImagesWithSizes(Album album, int maxAlbumImageCount = int.MaxValue)
+        {
+            return await GetPagedAlbumImagesWithSizes(album.Uris.AlbumImages.Uri, maxAlbumImageCount);
         }
 
         private async Task<List<AlbumImage>> GetPagedAlbumImages(string initialUri, int maxCount)

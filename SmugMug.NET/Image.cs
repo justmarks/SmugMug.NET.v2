@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
-
+using System.Collections.Generic;
 namespace SmugMug.NET
 {
     public class Image : SmugMugObject
@@ -35,7 +35,7 @@ namespace SmugMug.NET
         public string UploadKey;
         public bool Watermarked;
         public Uri WebUri;
-        public ImageUris Uris;
+        public Dictionary<string, SmugMugUri> Uris;
 
         public override string ToString()
         {
@@ -54,6 +54,12 @@ namespace SmugMug.NET
         public SmugMugUri ImageSizeDetails;
         public SmugMugUri ImageSizes;
         public SmugMugUri LargestImage;
+        public SmugMugUri CSMILVideo;
+        public SmugMugUri EmbedVideo;
+        public SmugMugUri Regions;
+        public SmugMugUri PointOfInterestCrops;
+        public SmugMugUri PointOfInterest;
+        public SmugMugUri LargestVideo;
     }
 
     public class ImageGetResponse : SmugMugUri
@@ -91,4 +97,56 @@ namespace SmugMug.NET
             return Image.ToString();
         }
     }
+
+    public class ImageSizesGetResponse : SmugMugUri
+    {
+        public ImageSizes ImageSizes;
+    }
+
+    public class ImageSizes
+    {
+        [JsonProperty("110VideoUrl")]
+        public string VideoUrl110;
+
+        [JsonProperty("1280VideoUrl")]
+        public string VideoUrl1280;
+
+        [JsonProperty("1920VideoUrl")]
+        public string VideoUrl1920;
+
+        [JsonProperty("200VideoUrl")]
+        public string VideoUrl200;
+
+        [JsonProperty("320VideoUrl")]
+        public string VideoUrl320;
+
+        [JsonProperty("4KImageUrl")]
+        public string ImageUrl4k;
+
+        [JsonProperty("5KImageUrl")]
+        public string ImageUrl5k;
+
+        [JsonProperty("640VideoUrl")]
+        public string VideoUrl640;
+
+        [JsonProperty("960VideoUrl")]
+        public string VideoUrl960;
+
+        public string LargeImageUrl;
+
+        public string LargestImageUrl;
+        public string LargestVideoUrl;
+        public string MediumImageUrl;
+        public string OriginalImageUrl;
+        public string SMILVideoUrl;
+        public string SmallImageUrl;
+        public string ThumbImageUrl;
+        public string TinyImageUrl;
+        public string X2LargeImageUrl;
+        public string X3LargeImageUrl;
+        public string X4LargeImageUrl;
+        public string X5LargeImageUrl;
+        public string XLargeImageUrl;
+    }
+
 }
