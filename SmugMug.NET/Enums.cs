@@ -28,7 +28,7 @@ namespace SmugMug.NET
     }
 
     [JsonConverter(typeof(StringEnumConverter))]
-    public enum SortMethod
+    public enum AlbumSortMethod
     {
         Position,
         Caption,
@@ -38,11 +38,22 @@ namespace SmugMug.NET
         [EnumMember(Value = "Date Modified")]
         DateModified,
         [EnumMember(Value = "Date Taken")]
-        DateTaken,
-        LastUpdated,
-        SortIndex
+        DateTaken
     }
-
+    [JsonConverter(typeof(StringEnumConverter))]
+    public enum SortMethod
+    {
+        SortIndex,
+        Name,
+        DateAdded,
+        DateModified
+    }
+    [JsonConverter(typeof(StringEnumConverter))]
+    public enum UserSortMethod
+    {
+        LastUpdated,
+        Position
+    }
     [JsonConverter(typeof(StringEnumConverter))]
     public enum PrivacyType
     {
@@ -67,7 +78,7 @@ namespace SmugMug.NET
         Local,
         LocalUser,
         Yes,
-        [EnumMember(Value = "Inherit from user")]
+        [EnumMember(Value = "Inherit from User")]
         InheritfromUser
     }
 
@@ -83,7 +94,7 @@ namespace SmugMug.NET
         No,
         HomeOnly,
         Yes,
-        [EnumMember(Value = "Inherit from user")]
+        [EnumMember(Value = "Inherit from User")]
         InheritfromUser
     }
 
@@ -95,6 +106,12 @@ namespace SmugMug.NET
         XLarge,
         X2Large,
         X3Large,
+        X4Large,
+        X5Large,
+        [EnumMember(Value = "4K")]
+        FourK,
+        [EnumMember(Value = "5K")]
+        FiveK,
         Original
     }
 
@@ -113,6 +130,8 @@ namespace SmugMug.NET
     {
         Folder,
         Album,
-        Page
+        Page,
+        [EnumMember(Value = "System Album")]
+        SystemAlbum
     }
 }

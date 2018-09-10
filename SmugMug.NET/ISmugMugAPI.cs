@@ -40,6 +40,7 @@ namespace SmugMug.NET
         Task DeleteImage(Image image);
 
         Task<AlbumImage> GetAlbumImage(Album album, string imageKey);
+        Task<AlbumImagesWithSizes> GetAlbumImagesWithSizes(Album album, int maxAlbumImageCount = int.MaxValue);
         Task<List<AlbumImage>> GetAlbumImages(Album album, int maxAlbumImageCount = int.MaxValue);
 
         Task<Node> GetNode(string nodeId);

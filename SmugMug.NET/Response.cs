@@ -12,7 +12,13 @@ namespace SmugMug.NET
         public int Code;
         public string Message;
     }
-
+    public class GetResponseWithExpansionStub<T,TE>
+    {
+        public T Response;
+        public Dictionary<string, TE> Expansions;
+        public int Code;
+        public string Message;
+    }
     public class PostResponseStub<T>
     {
         public T Response;

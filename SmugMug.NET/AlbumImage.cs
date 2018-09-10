@@ -18,4 +18,11 @@ namespace SmugMug.NET
     {
         public IEnumerable<AlbumImage> AlbumImage;
     }
+
+    public class AlbumImagesWithSizes
+    {
+        public List<AlbumImage> AlbumImages;
+        public Dictionary<string, ImageSizesGetResponse> ImageSizes;
+    }
+
 }

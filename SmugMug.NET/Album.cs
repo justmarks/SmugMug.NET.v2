@@ -15,7 +15,7 @@ namespace SmugMug.NET
         public bool Clean;
         public bool Comments;
         public string CommunityUri;
-        public DateTime Date;
+        public string Date;
         public string Description;
         public string DownloadPassword;
         public bool EXIF;
@@ -35,7 +35,7 @@ namespace SmugMug.NET
         public DateTime LastUpdated;
         public string Name;
         public string NodeID;
-        public int OriginalSizes;
+        public long OriginalSizes;
         public bool PackagingBrand;
         public string Password;
         public string PasswordHint;
@@ -48,10 +48,10 @@ namespace SmugMug.NET
         public bool Share;
         public string SmugSearchable;
         public SortDirection SortDirection;
-        public SortMethod SortMethod;
+        public AlbumSortMethod SortMethod;
         public string TemplateUri;
         public string ThemeUri;
-        public int TotalSizes;
+        public long TotalSizes;
         public string UploadKey;
         public string UrlName;
         public string UrlPath;
