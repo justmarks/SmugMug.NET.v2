@@ -18,7 +18,7 @@ namespace SmugMug.NET
         public string Plan;
         public bool QuickShare;
         public string RefTag;
-        public SortMethod SortBy;
+        public UserSortMethod SortBy;
         public string TotalAccountSize;
         public string TotalUploadedSize;
         public string ViewPassHint;
